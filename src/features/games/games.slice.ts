@@ -1,15 +1,13 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-
-import { baseQuery } from "@core/apis/base";
+import { api } from "@core/apis/base";
 
 export type GameType = "updated" | "rating" | "name";
 export type GameTypeOrder = GameType | `-${GameType}`;
 
-export const gamesApis = createApi({
-    baseQuery: baseQuery,
+export const gamesApis = api.injectEndpoints({
     endpoints: (build) => ({
-        getGames: build.query<any[], GameTypeOrder>({
-            query: (type = "updated") => `/?ordering=${type}`,
+        getGames: build.query<SearchResult<any>, GameTypeOrder>({
+            query: (type = "updated") =>
+                `/games?ordering=${type}&key=${process.env.REACT_APP_RAWG_API_KEY}`,
         }),
     }),
 });

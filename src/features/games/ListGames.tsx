@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useGetGamesQuery } from "@features/games/games.slice";
 import { GameListItem } from "@features/games/components/GameListItem";
 
-export const ListGames: FC = () => {
+export const ListGames: FC<any> = () => {
     const { data, error, isLoading } = useGetGamesQuery("updated");
 
     if (isLoading) {
@@ -14,9 +14,13 @@ export const ListGames: FC = () => {
         return <h3>Error: {error}</h3>;
     }
 
+    if (!data) {
+        return null;
+    }
+
     return (
         <div>
-            {data?.map((game, idx) => (
+            {data.results.map((game, idx) => (
                 <GameListItem game={game} key={idx} />
             ))}
         </div>
